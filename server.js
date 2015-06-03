@@ -6,7 +6,7 @@
     var app      = express();                               // create our app w/ express
     var mongojs  = require('mongojs');
     var morgan   = require('morgan');             // log requests to the console (express4)
-    var db       = mongojs('aeneadata', ['usuarios','proyectos']);
+    var db       = mongojs('mongodb://enolcasielles:hondacrf301989@ds063630.mongolab.com:63630/aenea_data', ['usuarios','proyectos']);
     var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
     var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 	var fs = require('fs');
