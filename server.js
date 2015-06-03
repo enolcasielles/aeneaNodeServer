@@ -37,7 +37,7 @@
 
 	
     // listen (start app with node server.js) ======================================
-    app.listen(8100);
+    app.listen(process.env.PORT || 8100);
     console.log("App listening on port 8100");
 
 
