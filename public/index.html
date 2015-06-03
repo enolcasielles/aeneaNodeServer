@@ -1,0 +1,150 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+    <title>Node/Angular Todo App</title>
+
+    <!-- SCROLLS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <style>
+        html                    { overflow-y:scroll; }
+        body                    { padding-top:50px; }
+        #todo-list              { margin-bottom:30px; }
+    </style>
+
+    <!-- SPELLS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="ng-file-upload.js"></script>
+    <script src="main.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<body ng-controller="mainController">
+    <div class='container'>
+
+
+      <!-- Selector para editar proyecto -->
+      Selecciona un proyecto  <select ng-model="proyectoSeleccionado" convert-to-number ng-change="update()">
+        <option ng-repeat="proyecto in proyectos" value="{{$index}}"> {{proyecto.nombre}} </option>
+      </select>
+      
+      <h2>Modificar proyecto</h2>
+    
+      <div>
+        <form name='exampleForm'>
+          <div class='form-group'>
+            <label for="nombre">Nombre</label>
+            <input type="text" class='form-control' placeholder='nombre' 
+            name='nombre' data-ng-model='formData.nombre' required 
+            data-ng-class='{ error: exampleForm.nombre.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show="!exampleForm.$pristine && exampleForm.name.$error.required">Name is required.</span>-->
+          </div>
+          
+          <div class='form-group'>
+            <label for="Descripcion">Descipcion</label>
+            <textarea rows="10" cols="100" type="text" class='form-control' placeholder='Descripcion' 
+            name='descripcion' data-ng-model='formData.descripcion' required
+            data-ng-class='{ error: exampleForm.descripcion.$invalid && !exampleForm.$pristine }'> </textarea>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>
+
+          <div class='form-group'>
+            <label for="ong">ONG</label>
+            <input type="text" class='form-control' placeholder='ong' 
+            name='ong' data-ng-model='formData.ong' required
+            data-ng-class='{ error: exampleForm.ong.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>
+
+          <div class='form-group'>
+            <label for="fechaFinaliza">Fecha para finalizar </label>
+            <input type="text" class='form-control' placeholder='DD/MM/YYYY' 
+            name='fechaFinaliza' data-ng-model='formData.fechaFinaliza' required
+            data-ng-class='{ error: exampleForm.fechaFinaliza.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>    
+
+          <div class="button" ngf-select ngf-change="cacheImage($files)">Pincha aqui para cargar la imagen</div>
+
+                    <br/> <br/>
+          
+          <input type="submit" class='btn btn-success pull-right' data-ng-click='updateProyecto()'>
+
+        </form>
+        
+        <input type="submit" class='btn btn-danger pull-left' value="Eliminar" data-ng-click='Eliminar()'> 
+
+        <br/>
+        <br/>
+        <br/>
+                <br/>
+        <br/>
+        <br/>
+                <br/>
+        <br/>
+        <br/>
+                <br/>
+        <br/>
+        <br/>
+       
+      
+      <h2>Cargar nuevo proyecto</h2>
+    
+      <div>
+        <form name='exampleForm'>
+          <div class='form-group'>
+            <label for="nombre">Nombre</label>
+            <input type="text" class='form-control' placeholder='nombre' 
+            name='nombre' data-ng-model='formData.nombre' required 
+            data-ng-class='{ error: exampleForm.nombre.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show="!exampleForm.$pristine && exampleForm.name.$error.required">Name is required.</span>-->
+          </div>
+          
+          <div class='form-group'>
+            <label for="Descripcion">Descipcion</label>
+            <textarea rows="10" cols="100" type="text" class='form-control' placeholder='Descripcion' 
+            name='descripcion' data-ng-model='formData.descripcion' required
+            data-ng-class='{ error: exampleForm.descripcion.$invalid && !exampleForm.$pristine }'> </textarea>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>
+
+          <div class='form-group'>
+            <label for="ong">ONG</label>
+            <input type="text" class='form-control' placeholder='ong' 
+            name='ong' data-ng-model='formData.ong' required
+            data-ng-class='{ error: exampleForm.ong.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>
+
+          <div class='form-group'>
+            <label for="fechaFinaliza">Fecha para finalizar </label>
+            <input type="text" class='form-control' placeholder='DD/MM/YYYY' 
+            name='fechaFinaliza' data-ng-model='formData.fechaFinaliza' required
+            data-ng-class='{ error: exampleForm.fechaFinaliza.$invalid && !exampleForm.$pristine }'>
+            <!--<span data-ng-show='!exampleForm.$pristine && exampleForm.lastname.$error.required'>Last name is required</span>-->
+          </div>    
+
+          <div class="button" ngf-select ngf-change="cacheImage($files)">Pincha aqui para cargar la imagen</div>
+
+                    <br/> <br/>
+          
+          <input type="submit" class='btn btn-success pull-right' data-ng-click='updateProyecto()'>
+
+        </form>
+        
+        <input type="submit" class='btn btn-danger pull-left' value="Eliminar" data-ng-click='Eliminar()'> 
+
+        <br/>
+        <br/>
+        <br/>
+    </div>
+
+</body>
+</html>
