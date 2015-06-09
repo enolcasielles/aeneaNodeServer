@@ -10,10 +10,10 @@ module.exports = function (server, db) {
 
     server.post('/api/v1/aenea/usuarios/registra', function (req, res, next) {
         var user = req.body;
-        pwdMgr.encriptar(user.password, function (err, hash) {
-            user.password = hash;
-            db.usuarios.insert(user,
-                function (err, dbUser) {
+        if (user.social != "NO") {  //Encripto la contraseña e inserto al usuario
+            pwdMgr.encriptar(user.password, function (err, hash) {
+                user.password = hash;
+                db.usuarios.insert(user, function (err, dbUser) {
                     if (err) { // Usiario duplicado
                         if (err.code == 11000) /* http://www.mongodb.org/about/contributors/error-codes/*/ {
                             res.writeHead(400, {
@@ -32,7 +32,51 @@ module.exports = function (server, db) {
                         res.end(JSON.stringify(dbUser));
                     }
                 });
-        });
+            });
+        }
+
+        else {  //Inserto al usuario si aun no estaba registrado
+                db.usuarios.insert(user, function (err, dbUser) {
+                    if (err) { // Usiario duplicado
+                        if (err.code == 11000) /* http://www.mongodb.org/about/contributors/error-codes/*/ {
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            dbUser.password = "";
+                            res.end(JSON.stringify(dbUser));
+                        }
+                    } else {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        dbUser.password = "";
+                        res.end(JSON.stringify(dbUser));
+                    }
+                });
+        }
+
+        function insertaUsuario(user) {
+            db.usuarios.insert(user, function (err, dbUser) {
+                if (err) { // Usiario duplicado
+                        if (err.code == 11000) /* http://www.mongodb.org/about/contributors/error-codes/*/ {
+                            res.writeHead(400, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify({
+                                error: err,
+                                message: "Email ya registrado"
+                            }));
+                        }
+                } else {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        dbUser.password = "";
+                        res.end(JSON.stringify(dbUser));
+                }
+            });
+        }
+
     });
 
     server.post('/api/v1/aenea/usuarios/login', function (req, res, next) {
