@@ -35,6 +35,11 @@ module.exports = function (server, db, fs) {
     server.post('/api/v1/aenea/proyectos/proyecto', function (req, res) {
         validarPeticion.validar(req, res, db, function () {
             var proyecto = req.body;
+            //Apunto la fecha de creacion
+            var fechaActual = new Date();
+            var mes = fechaActual.getMonth() + 1;
+            var fechaString = fechaActual.getFullYear() + "-" + mes + "-" + fechaActual.getDay();
+            proyecto.fechaCreacion = fechaString;
             db.proyectos.save(proyecto,
                 function (err, data) {
                     res.writeHead(200, {
