@@ -114,7 +114,7 @@ module.exports = function (server, db, fs) {
     server.delete('/api/v1/aenea/proyectos/proyecto/:id', function (req, res, next) {
         validarPeticion.validar(req, res, db, function () {
             db.proyectos.remove({
-                _id: db.ObjectId(req.body.id)
+                _id: db.ObjectId(req.params.id)
             }, function (err, data) {
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=utf-8'
