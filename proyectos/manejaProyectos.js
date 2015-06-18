@@ -38,7 +38,7 @@ module.exports = function (server, db, fs) {
             //Apunto la fecha de creacion
             var fechaActual = new Date();
             var mes = fechaActual.getMonth() + 1;
-            var fechaString = fechaActual.getFullYear() + "-" + mes + "-" + fechaActual.getDay();
+            var fechaString = fechaActual.getFullYear() + "-" + mes + "-" + fechaActual.getDate();
             proyecto.fechaCreacion = fechaString;
             db.proyectos.save(proyecto,
                 function (err, data) {
