@@ -2,7 +2,7 @@ var pwdMgr = require('./manejaPasswords');
 
 module.exports = function (server, db) {
 
-    var validarPeticion = require("validaPeticion");
+    var validarPeticion = require("./validaPeticion");
 
     // Indice unico
     db.usuarios.ensureIndex({

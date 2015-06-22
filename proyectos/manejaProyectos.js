@@ -4,7 +4,11 @@ var path = require('path');
 module.exports = function (server, db, fs) {
     var validarPeticion = require("../usuarios/validaPeticion");
 
-    //Recupera todos los proyectos
+    /** 
+     ** Recupera todos los proyectos del sistema
+     ** Se ha de enviar como header un token valido
+     **  
+     */
     server.get('/api/v1/aenea/proyectos/all', function (req, res) {
         validarPeticion.validar(req, res, db, function () {
             db.proyectos.find({},function (err, listado) {
@@ -16,7 +20,11 @@ module.exports = function (server, db, fs) {
         });
     });   
 
-    //Recupera el objeto que representa un proyecto a partir de su id
+    /** 
+     ** Recupera un proyecto concreto a partor de su id
+     ** Se ha de enviar como header un token valido
+     **  
+     */
     server.get('/api/v1/aenea/proyectos/proyecto/:id', function (req, res) {
         validarPeticion.validar(req, res, db, function () {
             db.proyectos.find({
@@ -31,7 +39,11 @@ module.exports = function (server, db, fs) {
     });
 
     
-    //Crea un nuevo proyecto en la base de datos
+    /**
+     ** Carga un nuevo proyecto al sistema
+     ** Se ha de enviar como header un token valido y como request los datos del proyecto
+     **
+     */
     server.post('/api/v1/aenea/proyectos/proyecto', function (req, res) {
         validarPeticion.validar(req, res, db, function () {
             var proyecto = req.body;
@@ -52,12 +64,15 @@ module.exports = function (server, db, fs) {
     });
 
 
-    //Upload imagen
-    server.post('/upload', function (req, res) {
+    /**
+     ** Sube una imagen al servidor. Solo admite archivos jpg o png. Guarda la imagen en la carpeta 'uploads'
+     */
+    server.post('/api/v1/aenea/proyectos/imagen', function (req, res) {
         var tempPath = req.files.file.path;
         var tmp = './uploads/' + req.files.file.originalname;
             console.log(tmp);
-        if (path.extname(req.files.file.name).toLowerCase() === '.png') {
+        var extension = path.extname(req.files.file.name).toLowerCase();
+        if (exension === '.png' || extension === '.jpg') {
             fs.rename(tempPath, tmp, function(err) {
                 if (err) throw err;
                 console.log("Upload completed!");
@@ -65,13 +80,16 @@ module.exports = function (server, db, fs) {
         } else {
             fs.unlink(tempPath, function () {
                 if (err) throw err;
-                console.error("Only .png files are allowed!");
+                console.error("Solo se admite archivos png o jpg");
             });
         }
     });
 
 
-    //Descarga una imagen
+    /**
+     ** Envia el archivo almacenado en la url pasada como parametro
+     ** Se ha de enviar como header un token valido
+     */
     server.get('/api/v1/aenea/proyectos/imagen/:url', function(req,res) {
         validarPeticion.validar(req, res, db, function () {
             res.sendfile(req.params.url);
@@ -79,7 +97,10 @@ module.exports = function (server, db, fs) {
     });
 
 
-    //Actualiza el valor de un proyecto
+    /**
+     ** Actualiza el estado de un proyecto, sobrescribe sus datos
+     ** Se ha de enviar como header un token valido y como request los datos del proyecto
+     */
     server.put('/api/v1/aenea/proyectos/proyecto/:id', function (req, res) {
         validarPeticion.validar(req, res, db, function () {
             db.proyectos.findOne( { _id : db.ObjectId(req.params.id) } , function (err, data) {
@@ -110,7 +131,10 @@ module.exports = function (server, db, fs) {
     });
 
     
-    //Borra un proyecto de la base de datos
+    /**
+     ** Borra un proyecto de la base de datos
+     ** Enviar el id del proyecto en la url
+     */
     server.delete('/api/v1/aenea/proyectos/proyecto/:id', function (req, res, next) {
         validarPeticion.validar(req, res, db, function () {
             db.proyectos.remove({
@@ -124,18 +148,6 @@ module.exports = function (server, db, fs) {
         });
     });
 
-
-    //Borra todos los proyectos de la base de datos
-    server.delete('/api/v1/aenea/proyectos/all', function (req, res, next) {
-        validarPeticion.validar(req, res, db, function () {
-            db.proyectos.remove({}, function (err, data) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/json; charset=utf-8'
-                });
-                res.end(JSON.stringify(data));
-            });
-        });
-    });
 
 
 }
