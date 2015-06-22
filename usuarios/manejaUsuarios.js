@@ -144,7 +144,7 @@ module.exports = function (server, db) {
      */
     server.get('/api/v1/aenea/usuarios/usuario/:email', function(req,res,next) {
         db.usuarios.findOne({
-            email: email  
+            email: req.params.email  
         }, function (err, dbUser) {
             
             if (dbUser == null) {
