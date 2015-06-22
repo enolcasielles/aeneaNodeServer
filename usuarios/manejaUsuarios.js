@@ -49,7 +49,6 @@ module.exports = function (server, db) {
                             res.writeHead(200, {
                                 'Content-Type': 'application/json; charset=utf-8'
                             });
-                            dbUser.password = "";
                             res.end(JSON.stringify(dbUser));
                         }
                     } else {
